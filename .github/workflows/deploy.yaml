@@ -53,3 +53,7 @@ jobs:
         run: cf push --vars-file vars.yaml --vars-file vars-env.yaml
           --var ENVIRONMENT=${{ steps.cf-setup.outputs.target-environment }}
           --strategy rolling
+
+      - name: Add network policies
+        run: |
+          cf add-network-policy flow-client outbound-proxy --protocol tcp --port 61443 -s ${{ steps.cf-setup.outputs.target-environment }}-public
